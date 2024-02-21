@@ -86,9 +86,21 @@ chr_lcd_8bit_t lcd_2 = {
     .lcd_data[7].logic     = PIC_LOW   
 };
 
+button_p btn_1 = {
+    .button_state         = BUTTON_RELEASED,
+    .button_connection    = BUTTON_ACTIVE_HIGH,
+    .button_pin.direction = PIC_INPUT,
+    .button_pin.port      = PORTC_P,
+    .button_pin.pin       = PIN_0,
+    .button_pin.logic     = PIC_LOW
+};
+
+
 
 void ecu_intialize(void){
     Std_ReturnType ret = E_NOT_OK;
-    ret = lcd_4bit_intialize(&lcd_1);
-    ret = lcd_8bit_intialize(&lcd_2);    
+    //ret = lcd_4bit_intialize(&lcd_1);
+    //ret = lcd_8bit_intialize(&lcd_2);
+    //ret = lcd_8bit_intialize(&lcd_2);
+    ret = button_initialize (&btn_1);
 }
