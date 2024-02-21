@@ -26,8 +26,7 @@ int main() {
     
    
     while(1){
-       ret = lcd_8bit_send_custom_char(&lcd_2,1,1,customChar,0);
-       ret = lcd_4bit_send_custom_char(&lcd_1,1,1,customChar,0);
+       
     }
     return (EXIT_SUCCESS);
 }
