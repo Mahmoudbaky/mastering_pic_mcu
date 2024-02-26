@@ -11,7 +11,7 @@
 /* INCLUDS */
 
 #include "LCD/ecu_lcd.h"
-#include "LCD/ecu_lcd.h"
+#include "LED/ecu_led.h"
 #include "push_button/ecu_button.h"
 
 /* MACRO DECLARATIONS */
