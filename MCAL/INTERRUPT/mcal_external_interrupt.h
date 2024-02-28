@@ -18,6 +18,8 @@
 
 #if INTERRUPT_INTx_FEATURE==INTERRUPT_ENABLE_FEATURE
 
+/******************for INT_0********************/
+
 /* This routine clears the interrupt enable for the external interrupt, INT0 */
 #define EXT_INT0_InterruptDisable()         (INTCONbits.INT0IE = 0)
 /* This routine sets the interrupt enable for the external interrupt, INT0 */
@@ -29,6 +31,8 @@
 /* This routine set the edge detect of the extern interrupt to positive edge */
 #define EXT_INT0_FallingEdgeSet()           (INTCON2bits.INTEDG0 = 0)
 
+/******************for INT_1********************/
+
 /* This routine clears the interrupt enable for the external interrupt, INT1 */
 #define EXT_INT1_InterruptDisable()         (INTCON3bits.INT1IE = 0)
 /* This routine sets the interrupt enable for the external interrupt, INT1 */
@@ -39,6 +43,8 @@
 #define EXT_INT1_RisingEdgeSet()            (INTCON2bits.INTEDG1 = 1)
 /* This routine set the edge detect of the extern interrupt to positive edge */
 #define EXT_INT1_FallingEdgeSet()           (INTCON2bits.INTEDG1 = 0)
+
+/******************for INT_2********************/
 
 /* This routine clears the interrupt enable for the external interrupt, INT2 */
 #define EXT_INT2_InterruptDisable()         (INTCON3bits.INT2IE = 0)
@@ -52,11 +58,13 @@
 #define EXT_INT2_FallingEdgeSet()           (INTCON2bits.INTEDG2 = 0)
 
 #if INTERRUPT_PRIORITY_FEATURE==INTERRUPT_ENABLE_FEATURE
-
+// FOR INT_1
 /* This routine set the INT1 External Interrupt Priority to be High priority */
 #define EXT_INT1_HighPrioritySet()           (INTCON3bits.INT1IP = 1)
 /* This routine set the INT1 External Interrupt Priority to be Low priority */
 #define EXT_INT1_LowPrioritySet()            (INTCON3bits.INT1IP = 0)
+
+// FOR INT_2
 /* This routine set the INT2 External Interrupt Priority to be High priority */
 #define EXT_INT2_HighPrioritySet()           (INTCON3bits.INT2IP = 1)
 /* This routine set the INT2 External Interrupt Priority to be Low priority */
@@ -64,16 +72,47 @@
 
 #endif
 
+#endif
 
+////////////////////////////////////////////////////////////////////////////////
+
+#if INTERRUPT_ON_CHANGE_FEATURE == INTERRUPT_ENABLE_FEATURE
+/* This routine clears the interrupt disable for the external interrupt, RBx */
+#define EXT_RBx_InterruptDisable()         (INTCONbits.RBIE = 0)
+/* This routine sets the interrupt enable for the external interrupt, RBx */
+#define EXT_RBx_InterruptEnable()          (INTCONbits.RBIE = 1)
+/* This routine clears the interrupt flag for the external interrupt, RBx */
+#define EXT_RBx_InterruptFlagClear()       (INTCONbits.RBIF = 0)
+
+#if INTERRUPT_PRIORITY_FEATURE==INTERRUPT_ENABLE_FEATURE
+
+/* This routine set the RBx External Interrupt Priority to be High priority */
+#define EXT_RBx_Priority_High()            (INTCON2bits.RBIP = 1)
+/* This routine set the RBx External Interrupt Priority to be Low priority */
+#define EXT_RBx_Priority_Low()             (INTCON2bits.RBIP = 0)
+
+#endif
 
 #endif
 
 
 /* DATA TYPE DECLARATIONS (ENUMS,UNIONS,STRUCTS) */
 
+typedef struct{
+    
+}interrupt_INTx_t;
+
+typedef struct{
+   
+}interrupt_RBx_t;
+
 
 /* FUNTIONS DECLARATIONS */
+Std_ReturnType Interrupt_INTx_Init  (const interrupt_INTx_t *int_obj);
+Std_ReturnType Interrupt_INTx_DeInit(const interrupt_INTx_t *int_obj);
 
+Std_ReturnType Interrupt_RBx_Init   (const interrupt_RBx_t *int_obj);
+Std_ReturnType Interrupt_RBx_DeInit (const interrupt_RBx_t *int_obj);
 
 #endif	/* MCAL_EXTERNAL_INTERRUPT_H */
 
