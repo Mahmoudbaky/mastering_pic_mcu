@@ -58,6 +58,7 @@
 #define EXT_INT2_FallingEdgeSet()           (INTCON2bits.INTEDG2 = 0)
 
 #if INTERRUPT_PRIORITY_FEATURE==INTERRUPT_ENABLE_FEATURE
+
 // FOR INT_1
 /* This routine set the INT1 External Interrupt Priority to be High priority */
 #define EXT_INT1_HighPrioritySet()           (INTCON3bits.INT1IP = 1)
@@ -98,16 +99,38 @@
 
 /* DATA TYPE DECLARATIONS (ENUMS,UNIONS,STRUCTS) */
 
-typedef struct{
+//typedef void (*InterruptHandler)(void);
+
+typedef enum{
+    INTERRUPT_FALLING_EDGE = 0,
+    INTERRUPT_RISING_EDGE
+}interrupt_INTx_edge;
+
+typedef enum{
+    INTERRUPT_EXTERNAL_INT0 =  0,
+    INTERRUPT_EXTERNAL_INT1,
+    INTERRUPT_EXTERNAL_INT2        
+}interrupt_INTx_src;
     
+
+typedef struct{
+    void (* EXT_InterruptHandler)(void);
+    pin_config_p           mcu_pin;
+    interrupt_INTx_edge    edge;
+    interrupt_INTx_src     source;
+    interrupt_priority_cfg priority;
 }interrupt_INTx_t;
 
 typedef struct{
-   
+    void (* EXT_InterruptHandler_HIGH)(void);
+    void (* EXT_InterruptHandler_LOW)(void);
+    pin_config_p           mcu_pin;
+    interrupt_priority_cfg priority;
 }interrupt_RBx_t;
 
 
 /* FUNTIONS DECLARATIONS */
+
 Std_ReturnType Interrupt_INTx_Init  (const interrupt_INTx_t *int_obj);
 Std_ReturnType Interrupt_INTx_DeInit(const interrupt_INTx_t *int_obj);
 
