@@ -13,6 +13,7 @@
 #include "../../MCAL/mcal_std_types.h"
 #include "pic18f4620.h"
 #include "mcal_interrupt_gen_cfg.h"
+#include "../GPIO/mcal_gpio.h"
 
 /* MACRO DECLARATIONS */
 
@@ -50,6 +51,11 @@
 #endif
 
 /* DATA TYPE DECLARATIONS (ENUMS,UNIONS,STRUCTS) */
+
+typedef enum{
+    INTERRUPT_LOW_PRIORITY = 0,
+    INTERRUPT_HIGH_PRIORITY        
+}interrupt_priority_cfg;
 
 /* FUNTIONS DECLARATIONS */
 
