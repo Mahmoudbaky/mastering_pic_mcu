@@ -15,12 +15,6 @@ pin_config_p pin = {
 };
 
 
-pin_config_p pin_1 = {
-    .port      = PORTC_P,
-    .pin       = PIN_2,
-    .direction = PIC_OUTPUT,
-    .logic     = PIC_LOW
-};
 
 chr_lcd_4bit_t lcd_1 = {
     .lcd_rs.port      = PORTC_P,
