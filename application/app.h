@@ -11,8 +11,10 @@
 /* INCLUDS */
 
 #include "../ecu/ecu_config.h"
-
+#include "../MCAL/INTERRUPT/mcal_external_interrupt.h"
 /* MACRO DECLARATIONS */
+
+
 
 /* MACRO FUNTIONS DECLARATIONS */
 
@@ -21,6 +23,7 @@ extern pin_config_p pin;
 extern chr_lcd_4bit_t lcd_1;
 extern chr_lcd_8bit_t lcd_2;
 extern button_p btn_1;
+
 /* FUNTIONS DECLARATIONS */
 
 void app_intialize(void);
