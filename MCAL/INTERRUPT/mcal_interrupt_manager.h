@@ -18,7 +18,9 @@
 /* DATA TYPE DECLARATIONS (ENUMS,UNIONS,STRUCTS) */
 
 /* FUNTIONS DECLARATIONS */
-
+void INT0_ISR (void);
+void INT1_ISR (void);
+void INT2_ISR (void);
 
 
 #endif	/* MCAL_INTERRUPT_MANAGER_H */
