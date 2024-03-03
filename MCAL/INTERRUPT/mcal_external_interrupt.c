@@ -354,7 +354,6 @@ static Std_ReturnType Interrupt_RBx_Priority_Init(const interrupt_RBx_t *int_obj
 }
 
 static Std_ReturnType Interrupt_RBx_Pin_Init(const interrupt_RBx_t *int_obj){
-
 }
 
 /***************helper functions for RBx**************/
