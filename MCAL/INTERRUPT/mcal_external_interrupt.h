@@ -99,7 +99,7 @@
 
 /* DATA TYPE DECLARATIONS (ENUMS,UNIONS,STRUCTS) */
 
-//typedef void (*InterruptHandler)(void);
+typedef void (*InterruptHandler)(void);
 
 typedef enum{
     INTERRUPT_FALLING_EDGE = 0,
@@ -123,7 +123,7 @@ typedef struct{
 
 typedef struct{
     void (* EXT_InterruptHandler_HIGH)(void);
-    void (* EXT_InterruptHandler_LOW)(void);
+    void (* EXT_InterruptHandler_LOW) (void);
     pin_config_p           mcu_pin;
     interrupt_priority_cfg priority;
 }interrupt_RBx_t;
