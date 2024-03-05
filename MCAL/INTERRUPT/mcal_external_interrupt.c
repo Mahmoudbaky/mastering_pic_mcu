@@ -391,7 +391,10 @@ Std_ReturnType Interrupt_RBx_DeInit (const interrupt_RBx_t *int_obj){
         ret = E_NOT_OK; /* NULL pointer detected */
     }
     else{
-        
+         /* This routine clears the interrupt disable for the external interrupt, RBx */
+        EXT_RBx_InterruptDisable();
+        /* This routine clears the interrupt flag for the external interrupt, RBx */
+        EXT_RBx_InterruptFlagClear();
     }
     return ret;
 }
