@@ -470,6 +470,7 @@ void RB7_ISR(uint8 RB7_Source){
 
 /***************helper functions for RBx**************/
 
+#if INTERRUPT_PRIORITY_FEATURE == INTERRUPT_ENABLE_FEATURE
 static Std_ReturnType Interrupt_RBx_Priority_Init(const interrupt_RBx_t *int_obj){
     Std_ReturnType ret = E_OK;
     if(NULL == int_obj){
@@ -489,6 +490,7 @@ static Std_ReturnType Interrupt_RBx_Priority_Init(const interrupt_RBx_t *int_obj
     }
     return ret;
 }
+#endif
 
 static Std_ReturnType Interrupt_Choose_Handler_RBx(const interrupt_RBx_t *int_obj){
     Std_ReturnType ret = E_NOT_OK;

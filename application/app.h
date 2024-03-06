@@ -9,9 +9,10 @@
 #define	APP_H
 
 /* INCLUDS */
-
 #include "../ecu/ecu_config.h"
+
 #include "../MCAL/INTERRUPT/mcal_external_interrupt.h"
+#include "../MCAL/EEPROM/mcal_eeprom.h"
 /* MACRO DECLARATIONS */
 
 
