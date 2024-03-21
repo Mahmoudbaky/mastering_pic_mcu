@@ -11,6 +11,7 @@
 /* INCLUDS */
 
 #include "mcal_interrupt_config.h"
+#include "../ADC/mcal_adc.h"
 
 /* MACRO DECLARATIONS */
 

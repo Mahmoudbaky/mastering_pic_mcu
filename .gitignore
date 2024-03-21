@@ -2,3 +2,4 @@ build
 dist
 nbproject
 SIM
+.vscode/settings.json
