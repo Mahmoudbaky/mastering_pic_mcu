@@ -16,10 +16,11 @@
 #include "pic18f4620.h"
 #include "../GPIO/mcal_gpio.h"
 
-
-
 /* MACRO DECLARATIONS */
 
+/*
+    * Description: ADC source selection
+*/
 #define ADC_AN0_ANALOG_FUNCTIONALITY  0x0E
 #define ADC_AN1_ANALOG_FUNCTIONALITY  0x0D
 #define ADC_AN2_ANALOG_FUNCTIONALITY  0x0C
@@ -39,11 +40,23 @@
 
 /* MACRO FUNTIONS DECLARATIONS */
 
+/*
+    * Description: ADC status 
+    * @return: 1 if the ADC is busy, 0 if the ADC is not busy
+*/
 #define ADC_CONVERSION_STATUS() (ADCON0bits.GO_nDONE)
 
+/*
+    * Description: ADC enable
+    1: Enable the ADC module
+    0: Disable the ADC module
+*/
 #define ADC_ENABLE()            (ADCON0bits.ADON = 1)
 #define ADC_DISABLE()           (ADCON0bits.ADON = 0)
 
+/*
+    * Description: ADC VREF ENABLE AND DISABLE
+*/
 #define ADC_ENABLE_VOLTAGE_REF() do{\
                                     ADCON1bits.VCFG0 = 1;\
                                     ADCON1bits.VCFG1 = 1;\
