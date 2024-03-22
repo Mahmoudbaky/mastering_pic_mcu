@@ -147,7 +147,9 @@ Std_ReturnType ADC_SelectChannel(const adc_config_t *adc, adc_Channel_select_t c
 Std_ReturnType ADC_StartConversion(const adc_config_t *adc);
 Std_ReturnType ADC_IsConversionDone(const adc_config_t *adc, uint8 *conversion_status);
 Std_ReturnType ADC_GetResult(const adc_config_t *adc, adc_result_t *result);
-Std_ReturnType ADC_GetConversion(const adc_config_t *adc, adc_Channel_select_t channel , adc_result_t *result);
+Std_ReturnType ADC_GetConversion(const adc_config_t *adc
+                                ,adc_Channel_select_t channel
+                                ,adc_result_t *result);
 
 
 #endif	/* MCAL_ADC_H */
