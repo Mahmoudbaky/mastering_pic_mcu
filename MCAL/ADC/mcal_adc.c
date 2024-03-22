@@ -9,12 +9,12 @@
 
 
 /* HELPER FUNCTIONS DECLERATIONS */
-static inline void adc_input_channel_port_configuration(const adc_config_t *adc);
+static inline void adc_input_channel_port_configuration(adc_Channel_select_t channel);
 static inline void select_result_format(const adc_config_t *adc);
 static inline void configure_VREF(const adc_config_t *adc);
 
 
-/* API FUNCTIONS */
+/*MAIN API FUNCTIONS */
 Std_ReturnType ADC_Init(const adc_config_t *adc){
     Std_ReturnType ret = E_OK;
     if(NULL == adc){
@@ -29,7 +29,7 @@ Std_ReturnType ADC_Init(const adc_config_t *adc){
         ADCON2bits.ADCS = adc->adc_conversion_clock;
         /* configure the default channel */
         ADCON0bits.CHS = adc->adc_Channel_select;
-        adc_input_channel_port_configuration(adc);
+        adc_input_channel_port_configuration(adc->adc_Channel_select);
         /* configure the interrupt */
         
         /* configure the result format */
@@ -62,7 +62,9 @@ Std_ReturnType ADC_SelectChannel(const adc_config_t *adc, adc_Channel_select_t c
         ret = E_NOT_OK;
     }
     else{
-       
+       /* configure the default channel */
+        ADCON0bits.CHS = channel;
+        adc_input_channel_port_configuration(channel);
     }
     return ret;
 }
@@ -73,7 +75,7 @@ Std_ReturnType ADC_StartConversion(const adc_config_t *adc){
         ret = E_NOT_OK;
     }
     else{
-       
+       ADC_START_CONVERSION();
     }
     return ret;
 }
@@ -84,7 +86,7 @@ Std_ReturnType ADC_IsConversionDone(const adc_config_t *adc, uint8 *conversion_s
         ret = E_NOT_OK;
     }
     else{
-       
+      *conversion_status = (uint8)(!(ADC_CONVERSION_STATUS()));
     }
     return ret;
 }
@@ -113,9 +115,10 @@ Std_ReturnType ADC_GetConversion(const adc_config_t *adc
     return ret;
 }
 
+
 /* HELPER FUNCTIONS */
-static inline void adc_input_channel_port_configuration(const adc_config_t *adc){
-    switch(adc->adc_Channel_select){
+static inline void adc_input_channel_port_configuration(adc_Channel_select_t channel){
+    switch(channel){
         case ADC_CHANNEL_0:
             SET_BIT(TRISA, _TRISA_RA0_POSN);
             break;

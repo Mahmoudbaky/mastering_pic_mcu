@@ -128,13 +128,13 @@ typedef enum {
 }adc_conversion_clock_t;
 
 typedef struct {
-    void (*adc_InterruptHandler)(void);                     /* callback function */
+    void (*adc_InterruptHandler)(void);             /* callback function */
     adc_aquisition_time_t  adc_aquisition_time;     /* @ref adc adc_aquisition_time_t */
     adc_conversion_clock_t adc_conversion_clock;    /* @ref adc_conversion_clock_t */
     adc_Channel_select_t   adc_Channel_select;      /* @ref adc_Channel_select_t */
-    uint8                adc_voltage_ref   : 1;   /* voltage ref configuration */
-    uint8                adc_result_format : 1;   /* result format */
-    uint8                adc_reserved      : 6;
+    uint8                  adc_voltage_ref   : 1;   /* voltage ref configuration */
+    uint8                  adc_result_format : 1;   /* result format */
+    uint8                  adc_reserved      : 6;
 }adc_config_t;
 
 typedef uint16 adc_result_t;
