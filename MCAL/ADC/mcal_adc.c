@@ -97,20 +97,35 @@ Std_ReturnType ADC_GetResult(const adc_config_t *adc, adc_result_t *result){
         ret = E_NOT_OK;
     }
     else{
-       
+        if(ADC_RIGHT_JUSTIFIED_RESULT == adc->adc_result_format){
+            *result = (adc_result_t)((ADRESH << 8) + ADRESL);
+        }
+        else if (ADC_LEFT_JUSTIFIED_RESULT == adc->adc_result_format){
+            *result = (adc_result_t)(((ADRESH << 8) + ADRESL) >> 6);
+        }
+        else{
+            *result = (adc_result_t)((ADRESH << 8) + ADRESL);
+        }
     }
     return ret;
 }
 
-Std_ReturnType ADC_GetConversion(const adc_config_t *adc
+Std_ReturnType ADC_GetConversion(const adc_config_t   *adc
                                 ,adc_Channel_select_t channel
-                                ,adc_result_t *result){
+                                ,adc_result_t         *result){
     Std_ReturnType ret = E_OK;
     if((NULL == adc) || (NULL == result)){
         ret = E_NOT_OK;
     }
     else{
-       
+        /* select channel */
+        ret = ADC_SelectChannel(adc, channel);
+        /* start adc conversion */
+        ret = ADC_StartConversion(adc);
+        /* check adc status */
+        while(ADCON0bits.GO_nDONE);
+        /* get the result */
+        ret = ADC_GetResult(adc, result);
     }
     return ret;
 }
