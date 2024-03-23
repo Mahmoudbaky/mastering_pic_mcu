@@ -93,6 +93,13 @@ void __interrupt() InterruptManager(void){
     }
     else{ /* Nothing */ }
     
+    /* ============ ADC Interrupt Start ============ */
+    if((INTERRUPT_ENABLE == PIE1bits.ADIE)&&(INTERRUPT_OCCUR == PIR1bits.ADIF)){
+        ADC_ISR();
+    }
+    else{/* nothing */}
+    /* ============ ADC Interrupt End ============ */
+
 }
 
 #endif

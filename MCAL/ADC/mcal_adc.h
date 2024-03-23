@@ -13,6 +13,7 @@
 
 #include "mcal_adc_cfg.h"
 #include "../../MCAL/mcal_std_types.h"
+#include "../../MCAL/INTERRUPT/mcal_internal_interrupt.h"
 #include "pic18f4620.h"
 #include "../GPIO/mcal_gpio.h"
 
@@ -37,11 +38,18 @@
 #define ALL_ANALOG_PINS  0x00
 #define ALL_DIGITAL_PINS 0x0F
 
+/*
+    * Description: ADC result format selection
+*/
 #define ADC_RIGHT_JUSTIFIED_RESULT  0x01U
 #define ADC_LEFT_JUSTIFIED_RESULT   0x00U
 
+/*
+    * Description: ADC voltage reference functionality eable and disable
+*/
 #define ADC_VOLTAGE_REF_ENABLE  0x01U
 #define ADC_VOLTAGE_REF_DISABLE 0x00U
+
 
 /* MACRO FUNTIONS DECLARATIONS */
 
@@ -76,9 +84,15 @@
                                     ADCON1bits.VCFG1 = 0;\
                                 }while(0)
 
+
+/*
+    * Description: ADC channel selection
+*/
 #define ADC_ANALOG_DIGITAL_FUNCTIONALITY(_CONFIG) (ADCON1bits.PCFG = _CONFIG)
 
-
+/*
+    * Description: ADC result format selection
+*/
 #define ADC_RIGHT_JUSTIFIED()   (ADCON2bits.ADFM = 1)
 #define ADC_LEFT_JUSTIFIED()    (ADCON2bits.ADFM = 0)
 
@@ -128,7 +142,10 @@ typedef enum {
 }adc_conversion_clock_t;
 
 typedef struct {
+#if ADC_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
     void (*adc_InterruptHandler)(void);             /* callback function */
+    interrupt_priority_cfg priority;                /* @ref interrupt_priority_cfg */
+#endif
     adc_aquisition_time_t  adc_aquisition_time;     /* @ref adc adc_aquisition_time_t */
     adc_conversion_clock_t adc_conversion_clock;    /* @ref adc_conversion_clock_t */
     adc_Channel_select_t   adc_Channel_select;      /* @ref adc_Channel_select_t */
@@ -141,15 +158,17 @@ typedef uint16 adc_result_t;
 
 /* FUNTIONS DECLARATIONS */
 
-Std_ReturnType ADC_Init(const adc_config_t *adc);
-Std_ReturnType ADC_DeInit(const adc_config_t *adc);
-Std_ReturnType ADC_SelectChannel(const adc_config_t *adc, adc_Channel_select_t channel);
-Std_ReturnType ADC_StartConversion(const adc_config_t *adc);
+Std_ReturnType ADC_Init            (const adc_config_t *adc);
+Std_ReturnType ADC_DeInit          (const adc_config_t *adc);
+Std_ReturnType ADC_SelectChannel   (const adc_config_t *adc, adc_Channel_select_t channel);
+Std_ReturnType ADC_StartConversion (const adc_config_t *adc);
 Std_ReturnType ADC_IsConversionDone(const adc_config_t *adc, uint8 *conversion_status);
-Std_ReturnType ADC_GetResult(const adc_config_t *adc, adc_result_t *result);
-Std_ReturnType ADC_GetConversion(const adc_config_t *adc
-                                ,adc_Channel_select_t channel
-                                ,adc_result_t *result);
+Std_ReturnType ADC_GetResult       (const adc_config_t *adc, adc_result_t *result);
+Std_ReturnType ADC_GetConversion_Blocking(const adc_config_t *adc
+                                         ,adc_Channel_select_t channel
+                                         ,adc_result_t *result);
+                                         
+Std_ReturnType ADC_GetConversion_Interrupt(const adc_config_t *adc, adc_Channel_select_t channel);
 
 
 #endif	/* MCAL_ADC_H */

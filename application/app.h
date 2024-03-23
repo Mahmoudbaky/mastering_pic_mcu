@@ -13,6 +13,7 @@
 
 #include "../MCAL/INTERRUPT/mcal_external_interrupt.h"
 #include "../MCAL/EEPROM/mcal_eeprom.h"
+#include "../MCAL/ADC/mcal_adc.h"
 /* MACRO DECLARATIONS */
 
 

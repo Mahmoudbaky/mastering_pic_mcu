@@ -7,6 +7,9 @@
 
 #include "mcal_adc.h"
 
+#if ADC_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
+static void (*ADC_InterruptHandler)(void) = NULL;
+#endif
 
 /* HELPER FUNCTIONS DECLERATIONS */
 static inline void adc_input_channel_port_configuration(adc_Channel_select_t channel);
@@ -31,7 +34,16 @@ Std_ReturnType ADC_Init(const adc_config_t *adc){
         ADCON0bits.CHS = adc->adc_Channel_select;
         adc_input_channel_port_configuration(adc->adc_Channel_select);
         /* configure the interrupt */
-        
+        #if ADC_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
+            ADC_InterruptEnable();
+            ADC_InterruptFlagClear();
+            #if ADC_INTURRUPT_PRIORITY_FEATURE == INTERRUPT_ENABLE_FEATURE
+            if(INTERRUPT_HIGH_PRIORITY == adc->priority){ADC_InterruptPriorityHIGH();}
+            else if(INTERRUPT_LOW_PRIORITY == adc->priority){ADC_InterruptPriorityLOW();}
+            else{/* NOTHING */}
+            #endif
+            ADC_InterruptHandler = adc->adc_InterruptHandler;
+        #endif
         /* configure the result format */
         select_result_format(adc);
         /* configure the voltage reference */
@@ -51,7 +63,9 @@ Std_ReturnType ADC_DeInit(const adc_config_t *adc){
         /* disable the adc */
         ADC_DISABLE();
         /* configure the interrupt */
-        
+        #if ADC_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
+        ADC_InterruptDisable();
+        #endif
     }
     return ret;
 }
@@ -110,9 +124,9 @@ Std_ReturnType ADC_GetResult(const adc_config_t *adc, adc_result_t *result){
     return ret;
 }
 
-Std_ReturnType ADC_GetConversion(const adc_config_t   *adc
-                                ,adc_Channel_select_t channel
-                                ,adc_result_t         *result){
+Std_ReturnType ADC_GetConversion_Blocking(const adc_config_t   *adc
+                                         ,adc_Channel_select_t channel
+                                         ,adc_result_t         *result){
     Std_ReturnType ret = E_OK;
     if((NULL == adc) || (NULL == result)){
         ret = E_NOT_OK;
@@ -128,6 +142,19 @@ Std_ReturnType ADC_GetConversion(const adc_config_t   *adc
         ret = ADC_GetResult(adc, result);
     }
     return ret;
+}
+
+Std_ReturnType ADC_GetConversion_Interrupt(const adc_config_t *adc, adc_Channel_select_t channel){
+    Std_ReturnType ret = E_OK;
+    if((NULL == adc)){
+        ret = E_NOT_OK;
+    }
+    else{
+        /* select channel */
+        ret = ADC_SelectChannel(adc, channel);
+        /* start adc conversion */
+        ret = ADC_StartConversion(adc);
+    }
 }
 
 
@@ -191,6 +218,7 @@ static inline void select_result_format(const adc_config_t *adc){
 }
 
 static inline void configure_VREF(const adc_config_t *adc){
+
     if(ADC_VOLTAGE_REF_ENABLE == adc->adc_voltage_ref){
         ADC_ENABLE_VOLTAGE_REF();
     }
@@ -200,4 +228,11 @@ static inline void configure_VREF(const adc_config_t *adc){
     else{
         /* NOTHING */
     }
+}
+
+
+/* ADC INTERRUPT SERVICE ROUTINE */
+void ADC_ISR(void){
+    ADC_InterruptFlagClear();
+    if(ADC_InterruptHandler){ADC_InterruptHandler();}
 }
