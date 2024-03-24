@@ -35,6 +35,8 @@ Std_ReturnType ADC_Init(const adc_config_t *adc){
         adc_input_channel_port_configuration(adc->adc_Channel_select);
         /* configure the interrupt */
         #if ADC_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
+            INTERRUPT_globalInterruptEnable();
+            INTERRUPT_PeripheralInterruptEnable();
             ADC_InterruptEnable();
             ADC_InterruptFlagClear();
             #if ADC_INTURRUPT_PRIORITY_FEATURE == INTERRUPT_ENABLE_FEATURE

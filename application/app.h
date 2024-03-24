@@ -12,6 +12,7 @@
 #include "../ecu/ecu_config.h"
 
 #include "../MCAL/INTERRUPT/mcal_external_interrupt.h"
+#include "../MCAL/INTERRUPT/mcal_internal_interrupt.h"
 #include "../MCAL/EEPROM/mcal_eeprom.h"
 #include "../MCAL/ADC/mcal_adc.h"
 /* MACRO DECLARATIONS */
