@@ -100,6 +100,13 @@ void __interrupt() InterruptManager(void){
     else{/* nothing */}
     /* ============ ADC Interrupt End ============ */
 
+    /* ============ Timer0 Interrupt Start ============ */
+    if((INTERRUPT_ENABLE == INTCONbits.TMR0IE)&&(INTERRUPT_OCCUR == INTCONbits.TMR0IF)){
+        TIMER0_ISR();
+    }
+    else{/* nothing */}
+    /* ============ Timer0 Interrupt End ============ */
+
 }
 
 #endif

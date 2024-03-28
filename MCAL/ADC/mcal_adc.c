@@ -34,15 +34,17 @@ Std_ReturnType ADC_Init(const adc_config_t *adc){
         ADCON0bits.CHS = adc->adc_Channel_select;
         adc_input_channel_port_configuration(adc->adc_Channel_select);
         /* configure the interrupt */
-        #if ADC_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
-            INTERRUPT_globalInterruptEnable();
-            INTERRUPT_PeripheralInterruptEnable();
+#if ADC_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
+            
             ADC_InterruptEnable();
             ADC_InterruptFlagClear();
-            #if ADC_INTURRUPT_PRIORITY_FEATURE == INTERRUPT_ENABLE_FEATURE
+#if INTERRUPT_PRIORITY_FEATURE == INTERRUPT_ENABLE_FEATURE
             if(INTERRUPT_HIGH_PRIORITY == adc->priority){ADC_InterruptPriorityHIGH();}
             else if(INTERRUPT_LOW_PRIORITY == adc->priority){ADC_InterruptPriorityLOW();}
             else{/* NOTHING */}
+#else 
+            INTERRUPT_globalInterruptEnable();
+            INTERRUPT_PeripheralInterruptEnable();
             #endif
             ADC_InterruptHandler = adc->adc_InterruptHandler;
         #endif

@@ -16,9 +16,14 @@
 #define TIMER_0_PRESCALER_ENABLE_CFG  1
 #define TIMER_0_PRESCALER_DISABLE_CFG 0
 
-#define TIMER_0_RISING_EDGE_SFG       0   
-#define TIMER_0_FALLING_EDGE_SFG      1
+#define TIMER_0_RISING_EDGE_SFG       1   
+#define TIMER_0_FALLING_EDGE_SFG      0
 
+#define TIMER0_TIMER_MODE             1
+#define TIMER0_COUNTER_MODE           0
+
+#define TIMER0_8BIT_REGISTER_MODE     1
+#define TIMER0_16BIT_REGISTER_MODE    0
 
 /* MACRO FUNTIONS DECLARATIONS */
 
@@ -37,11 +42,6 @@
 #define TIMER_0_PRESCALER_DISABLE()         (T0CONbits.PSA = 1)     // Prescaler is not assigned to the Timer0 module.
 #define TIMER_0_PRESCALER_ENABLE()          (T0CONbits.PSA = 0)     // Prescaler is assigned to the Timer0 module.
 
-
-//#define TIMER_0_CLEAR_FLAG()            (INTCONbits.TMR0IF = 0)
-//#define TIMER_0_FLAG_IS_SET()           (INTCONbits.TMR0IF)
-//#define TIMER_0_INTERRUPT_ENABLE()      (INTCONbits.TMR0IE = 1)
-
 /* DATA TYPE DECLARATIONS (ENUMS,UNIONS,STRUCTS) */
 
 typedef enum {
@@ -57,12 +57,22 @@ typedef enum {
 
 
 typedef struct {
+#if ADC_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
+    void (*Timer0_InterruptHandler)(void);             /* callback function */
+    interrupt_priority_cfg priority;                   /* @ref interrupt_priority_cfg */
+#endif
     timer_0_prescaler_section_t prescaler_value;
-    uint8 prescaler_enable : 1;
-    uint8 timer0_counter_edge : 1;
-    uint8 timer0_mode : 1;
+    uint16 preloaded_value;
+    uint8 prescaler_enable     : 1;
+    uint8 timer0_counter_edge  : 1;
+    uint8 timer0_mode          : 1;
     uint8 timer0_register_size : 1;
-    uint8 timer0_reserved : 4;
+    uint8 timer0_reserved      : 4;
 } timer_0_config_t;
 
 /* FUNTIONS DECLARATIONS */
+
+Std_ReturnType Timer_0_Init  (const timer_0_config_t *timer_0);  // Initialize Timer0 module.
+Std_ReturnType Timer_0_DeInit(const timer_0_config_t *timer_0);  // Deinitialize Timer0 module.
+Std_ReturnType Timer_0_Write (const timer_0_config_t *timer_0 , uint16 timer0_value);  // Write a value to Timer0 register.
+Std_ReturnType Timer_0_Read  (const timer_0_config_t *timer_0 , uint16 *timer0_value);  // Read a value from Timer0 register.
