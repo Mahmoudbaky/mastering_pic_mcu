@@ -39,6 +39,7 @@ Std_ReturnType Timer_0_Init(const timer_0_config_t *timer_0)
         /* load the timer0 register */
         TMR0H = (uint8)(timer_0->preloaded_value >> 8);
         TMR0L = (uint8)(timer_0->preloaded_value);
+        /* save the preloaded value for interrupt purpose "to use this value in TIMER0_ISR" */
         timer0_preloaded = timer_0->preloaded_value;
         /* interrupt config */
 #if TIMER0_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
@@ -119,14 +120,15 @@ Std_ReturnType Timer_0_Read(const timer_0_config_t *timer_0, uint16 *timer0_valu
     return ret;
 }
 
-/* timer0 ise */
+/* timer0 isr */
 void TIMER0_ISR(void)
 {
+    /* clear flag */
     TIMER0_InterruptFlagClear();
-
+    /* we must reload the timer with preloaded value */
     TMR0H = (uint8)(timer0_preloaded >> 8);
     TMR0L = (uint8)(timer0_preloaded);
-
+    /* call the callback function */
     if (timer0_callback)
     {
         timer0_callback();

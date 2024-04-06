@@ -15,6 +15,8 @@
 #include "../MCAL/INTERRUPT/mcal_internal_interrupt.h"
 #include "../MCAL/EEPROM/mcal_eeprom.h"
 #include "../MCAL/ADC/mcal_adc.h"
+#include "../MCAL/TIMER_0/mcal_timer_0.h"
+#include "../MCAL/TIMER1/mcal_timer1.h"
 /* MACRO DECLARATIONS */
 
 

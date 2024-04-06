@@ -93,6 +93,8 @@ void __interrupt() InterruptManager(void){
     }
     else{ /* Nothing */ }
     
+    // internal interrupt : ADC, Timer0, Timer1
+
     /* ============ ADC Interrupt Start ============ */
     if((INTERRUPT_ENABLE == PIE1bits.ADIE)&&(INTERRUPT_OCCUR == PIR1bits.ADIF)){
         ADC_ISR();
@@ -106,6 +108,28 @@ void __interrupt() InterruptManager(void){
     }
     else{/* nothing */}
     /* ============ Timer0 Interrupt End ============ */
+
+    /* ============ Timer1 Interrupt Start ============ */
+    if((INTERRUPT_ENABLE == PIE1bits.TMR1IE)&&(INTERRUPT_OCCUR == PIR1bits.TMR1IF)){
+        TIMER1_ISR();
+    }
+    else{/* nothing */}
+    /* ============ Timer1 Interrupt End ============ */
+
+    /* ============ Timer2 Interrupt Start ============ */
+    if((INTERRUPT_ENABLE == PIE1bits.TMR2IE)&&(INTERRUPT_OCCUR == PIR1bits.TMR2IF)){
+        TIMER2_ISR();
+    }
+    else{/* nothing */}
+    /* ============ Timer2 Interrupt End ============ */
+
+    /* ============ Timer3 Interrupt Start ============ */
+    if((INTERRUPT_ENABLE == PIE2bits.TMR3IE)&&(INTERRUPT_OCCUR == PIR2bits.TMR3IF)){
+        TIMER3_ISR();
+    }
+    else{/* nothing */}
+    /* ============ Timer3 Interrupt End ============ */
+
 
 }
 

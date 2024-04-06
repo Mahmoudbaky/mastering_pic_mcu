@@ -7,29 +7,36 @@
 
 #include "app.h"
 
-void adc_isr_fun(void);
+void timer_isr_fun(void);
 
-pin_config_p PIN_C0 = {
-    .direction = PIC_OUTPUT,
-    .logic     = PIC_LOW,
+pin_config_p pin_1 = {
     .pin       = PIN_0,
-    .port      = PORTC_P
+    .port      = PORTC_P,
+    .direction = PIC_OUTPUT,
+    .logic     = PIC_LOW
 };
 
-adc_config_t adc_1 ={
-    .adc_aquisition_time  = ADC_12_TAD,
-    .adc_conversion_clock = ADC_FOSC_16,
-    .adc_Channel_select   = ADC_CHANNEL_0,
-    .adc_voltage_ref      = ADC_VOLTAGE_REF_DISABLE,
-    .adc_result_format    = ADC_RIGHT_JUSTIFIED_RESULT,
-    .adc_InterruptHandler = adc_isr_fun
+timer1_config_t timer1_obj = {
+    .timer1_callback = timer_isr_fun,
+    .clock_source  = TIMER1_INTERNAL_CLOCK,
+    .timer1_osc_en = TIMER1_OSC_DISABLE,
+    .preloaded_value = 3036,
+    .prescaler = TIMER1_PRESCALER_8
+    //.read_write_mode = TIMER1_16BIT_READ_WRITE  
 };
 
-uint16 adc_res_0 = 0;
-uint8  flag_int  = 0;
+/*
+timer_0_config_t timer2_obj = {
+    .preloaded_value         = 3036,
+    .prescaler_enable        = TIMER_0_PRESCALER_ENABLE_CFG,
+    .prescaler_value         = TIMER_0_PRESCALER_32,
+    .Timer0_InterruptHandler = timer_isr_fun,
+    .timer0_mode             = TIMER0_TIMER_MODE,
+    .timer0_register_size    = TIMER0_8BIT_REGISTER_MODE
+};
+*/
 
-//uint16 adc_res_1 = 0;
-//uint16 adc_res_2 = 0;
+uint16 lol = 0;
 
 Std_ReturnType ret = E_NOT_OK;
 
@@ -39,22 +46,20 @@ int main() {
     
     while(1){
         
-        ret = ADC_GetConversion_Interrupt(&adc_1, ADC_CHANNEL_0);
      
     }
     return (EXIT_SUCCESS);
 }
 
 
-void adc_isr_fun(void){
-    ret = E_NOT_OK;
-    flag_int++;
-    ret = ADC_GetResult(&adc_1, &adc_res_0);
+void timer_isr_fun(void){
+    lol ++;
+    gpio_pin_toggle_logic(&pin_1);
 }
 
 void app_intialize(void){
     Std_ReturnType ret = E_NOT_OK;
-    ret = ADC_Init(&adc_1);
-    // ret = gpio_pin_initialization(&PIN_C0);
+    ret = timer1_Init(&timer1_obj);
+    ret = gpio_pin_initialization (&pin_1);
     ecu_intialize();
 }
