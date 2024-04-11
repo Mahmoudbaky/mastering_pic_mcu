@@ -47,7 +47,7 @@ typedef enum {
     TIMER2_PRESCALER_1 = 0,  // prescaler is off
     TIMER2_PRESCALER_4,
     TIMER2_PRESCALER_16
-}prescaler_t;
+}timer2_prescaler_t;
 
 
 typedef struct {
@@ -57,7 +57,7 @@ typedef struct {
 #endif
     uint8                   preloaded_value;
     Postscale_t             Postscale;
-    prescaler_t             prescaler;
+    timer2_prescaler_t             prescaler;
 }timer2_config_t;
 
 /* FUNTIONS DECLARATIONS */

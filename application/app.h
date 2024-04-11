@@ -16,7 +16,10 @@
 #include "../MCAL/EEPROM/mcal_eeprom.h"
 #include "../MCAL/ADC/mcal_adc.h"
 #include "../MCAL/TIMER_0/mcal_timer_0.h"
+#include "../MCAL/TIMER2/mcal_timer2.h"
+#include "../MCAL/TIMER3/mcal_timer3.h"
 #include "../MCAL/TIMER1/mcal_timer1.h"
+#include "../MCAL/CCP/mcal_ccp.h"
 /* MACRO DECLARATIONS */
 
 

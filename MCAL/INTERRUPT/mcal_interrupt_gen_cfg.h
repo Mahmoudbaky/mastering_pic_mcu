@@ -20,11 +20,19 @@
 #define INTERRUPT_ON_CHANGE_FEATURE INTERRUPT_ENABLE_FEATURE   /* enable the on change interrupt */
 
 /* INTERNAL INTERRUPT CONFIGURATIONS */
+
+//  ADC interrupt macros:
 #define ADC_INTURRUPT_FUNCTION_ENABLE     INTERRUPT_ENABLE_FEATURE   /* enable the ADC interrupt */
+
+//  timers interrupt macros:
 #define TIMER0_INTURRUPT_FUNCTION_ENABLE  INTERRUPT_ENABLE_FEATURE   // enable the timer0 interrupt 
 #define TIMER1_INTURRUPT_FUNCTION_ENABLE  INTERRUPT_ENABLE_FEATURE   // enable the timer1 interrupt
 #define TIMER2_INTURRUPT_FUNCTION_ENABLE  INTERRUPT_ENABLE_FEATURE   // enable the timer2 interrupt
 #define TIMER3_INTURRUPT_FUNCTION_ENABLE  INTERRUPT_ENABLE_FEATURE   // enable the timer3 interrupt
+
+//  CCP interrupt macros:  
+#define CCP1_INTURRUPT_FUNCTION_ENABLE    INTERRUPT_ENABLE_FEATURE   // enable the CCP1 interrupt
+#define CCP2_INTURRUPT_FUNCTION_ENABLE    INTERRUPT_ENABLE_FEATURE   // enable the CCP1 interrupt
 
 
 

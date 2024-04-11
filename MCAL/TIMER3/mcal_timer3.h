@@ -56,7 +56,7 @@ typedef enum {
     prescaler_2,
     prescaler_4,
     prescaler_8
-}prescaler_t;
+}timer3_prescaler_t;
 
 typedef struct{
 #if TIMER3_INTERRUPT_FEATURE_ENABLE==INTERRUPT_FEATURE_ENABLE
@@ -64,7 +64,7 @@ typedef struct{
     interrupt_priority_cfg priority;
 #endif
     uint16      timer3_preload_value;
-    prescaler_t timer3_prescaler_value;
+    timer3_prescaler_t timer3_prescaler_value;
     uint8       timer3_mode : 1;
     uint8       timer3_counter_mode : 1;
     uint8       timer3_reg_wr_mode : 1;

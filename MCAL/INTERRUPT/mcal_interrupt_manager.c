@@ -129,7 +129,22 @@ void __interrupt() InterruptManager(void){
     }
     else{/* nothing */}
     /* ============ Timer3 Interrupt End ============ */
+    
 
+    /* ============ ccp1 and ccp2 Interrupt Start ============ */
+
+    if((INTERRUPT_ENABLE == PIE1bits.CCP1IE)&&(INTERRUPT_OCCUR == PIR1bits.CCP1IF)){
+        CCP1_ISR();
+    }
+    else{/* nothing */}
+
+    if((INTERRUPT_ENABLE == PIE2bits.CCP2IE)&&(INTERRUPT_OCCUR == PIR2bits.CCP2IF)){
+        CCP2_ISR();
+    }
+    else{/* nothing */}
+
+
+    /* ============ ccp1 and ccp2 Interrupt End ============ */
 
 }
 
