@@ -10,32 +10,32 @@
 void isr1_fun(void);
 void isr2_fun(void);
 
-volatile uint8 isr_flage1 = 0;
-volatile uint8 isr_flage2 = 0;
+volatile uint16 isr_flage1 = ZERO_INIT;
+volatile uint16 isr_flage2 = ZERO_INIT;
 
-ccp_config_t ccp1_obj = {
-    .ccp_pick          = CCP1_PICK,
-    //.pwm_freq          = 20000,
-    //.Postscale         = CCP_TIMER2_POSTSCALE_1,
-    //.prescaler         = CCP_TIMER2_PRESCALER_1,
-    .ccp_mode         = CCP_CAPTURE_MODE,
-    .ccp_mode_variant = CCP_CAPTURE_MODE_RISING_EDGE,
-    .pin.port      = PORTC_P,
-    .pin.pin       = PIN_2,
-    .pin.direction = PIC_INPUT,
-    .pin.logic     = PIC_HIGH,
-    .ccp_timer_mode = CCP1_CCP2_TIMER3,
-    .ccp1_isr     = isr1_fun
+volatile uint8 rx_data = ZERO_INIT;
+
+pin_config_p led_1 = {
+    .port = PORTD_P,
+    .pin  = PIN_0,
+    .logic= PIC_LOW,
+    .direction = PIC_OUTPUT
 };
 
 
+eusart_obj_t eusart_obj =  {
+    .eusart_baudrate_value           = 9600,
+    .eusart_baudrate_equation_select = BUADRATE_ASYNC_8BIT_LOW_SPEED,
 
-timer3_config_t timer_obj = {
-    .TMR3_InterruptHandler  = isr2_fun,
-    .timer3_mode            = TIMER3_TIMER_MODE,
-    .timer3_preload_value   = 0,
-    .timer3_prescaler_value = prescaler_1,
-    .timer3_reg_wr_mode     = TIMER3_RW_REG_8Bit_MODE
+    .eusart_tx_cfg.eusart_tx_9bit_enable      = EUSART_ASYNC_TX_9BIT_DISABLE,
+    .eusart_tx_cfg.eusart_tx_enable           = EUSART_ASYNC_TX_ENABLE,
+    .eusart_tx_cfg.eusart_tx_interrupt_enable = EUSART_ASYNC_TX_INTERRUPT_ENABLE,
+    .eusart_tx_isr                            = NULL,
+
+    .eusart_rx_cfg.eusart_rx_9bit_enable      = EUSART_ASYNC_RX_9BIT_DISABLE,
+    .eusart_rx_cfg.eusart_rx_enable           = EUSART_ASYNC_RX_ENABLE,
+    .eusart_rx_cfg.eusart_rx_interrupt_enable = EUSART_ASYNC_RX_INTERRUPT_ENABLE,
+    .eusart_rx_isr                            = isr2_fun
 };
 
 
@@ -45,31 +45,37 @@ Std_ReturnType ret = E_NOT_OK;
 int main() {
 
     app_intialize();
+    ret = EUSART_WriteByte_blocking('a');
 
-    
-    
     while(1){
-        
-     
+    
     }
     return (EXIT_SUCCESS);
 }
 
 
-void isr_fun(void){
-    
-}
-
 void app_intialize(void){
     Std_ReturnType ret = E_NOT_OK;
-    ret = ccp_Init   (&ccp1_obj);
-    ret = Timer3_Init(&timer_obj);
+    ret = EUSART_Async_Init(&eusart_obj);
+    ret = gpio_pin_initialization(&led_1);
     // ecu_intialize();
 }
 
-void isr1_fun(void){
-    isr_flage1++;
+void isr1_fun(void){ 
+
 }
+
 void isr2_fun(void){
-    isr_flage2++;
+    Std_ReturnType ret = E_NOT_OK;
+    EUSART_ReadByte_nonblocking(&rx_data);
+    if ('c' == rx_data){
+        ret = gpio_pin_write_logic(&led_1, PIC_HIGH);
+        ret = EUSART_WriteByte_blocking('b');
+        __delay_ms(250);
+    }
+    if ('d' == rx_data){
+        ret = gpio_pin_write_logic(&led_1, PIC_LOW);
+        ret = EUSART_WriteByte_blocking('a');
+        __delay_ms(250);
+    }
 }

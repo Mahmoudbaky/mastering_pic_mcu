@@ -20,6 +20,7 @@
 #include "../MCAL/TIMER3/mcal_timer3.h"
 #include "../MCAL/TIMER1/mcal_timer1.h"
 #include "../MCAL/CCP/mcal_ccp.h"
+#include "../MCAL/EUSART/mcal_eusart.h"
 /* MACRO DECLARATIONS */
 
 

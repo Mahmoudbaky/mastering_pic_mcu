@@ -136,10 +136,40 @@
 #endif
 #endif
 
+// USART interrupt macros:
+#if EUSART_TX_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
+/* This routine clears the interrupt enable for the EUSART tx module*/
+#define EUSART_TX_InterruptDisable()        (PIE1bits.TXIE = 0)
+/* This routine sets the interrupt enable for the EUSART tx module*/
+#define EUSART_TX_InterruptEnable()         (PIE1bits.TXIE = 1)
+/* This routine clears the interrupt flag for the EUSART tx module*/
+// flag is cleared by writing to TXREG
+#if INTERRUPT_PRIORITY_FEATURE  == INTERRUPT_ENABLE_FEATURE
+/* This routine set the EUSART tx Interrupt Priority to be High priority */
+#define EUSART_TX_InterruptPriorityHIGH()   (IPR1bits.TXIP = 1)
+/* This routine set the EUSART tx Interrupt Priority to be Low priority */
+#define EUSART_TX_InterruptPriorityLOW()    (IPR1bits.TXIP = 0)
+#endif
+#endif
+
+#if EUSART_RX_INTURRUPT_FUNCTION_ENABLE == INTERRUPT_ENABLE_FEATURE
+/* This routine clears the interrupt enable for the EUSART rx module*/
+#define EUSART_RX_InterruptDisable()        (PIE1bits.RCIE = 0)
+/* This routine sets the interrupt enable for the EUSART rx module*/
+#define EUSART_RX_InterruptEnable()         (PIE1bits.RCIE = 1)
+/* This routine clears the interrupt flag for the EUSART rx module*/
+// flag is cleared by reading RCREG
+#if INTERRUPT_PRIORITY_FEATURE  == INTERRUPT_ENABLE_FEATURE
+/* This routine set the EUSART rx Interrupt Priority to be High priority */
+#define EUSART_RX_InterruptPriorityHIGH()   (IPR1bits.RCIP = 1)
+/* This routine set the EUSART rx Interrupt Priority to be Low priority */
+#define EUSART_RX_InterruptPriorityLOW()    (IPR1bits.RCIP = 0)
+#endif
+#endif
+
+
 /* DATA TYPE DECLARATIONS (ENUMS,UNIONS,STRUCTS) */
 
 /* FUNTIONS DECLARATIONS */
 
-
-#endif	/* MCAL_INTERNAL_INTERRUPT_H */
-
+#endif

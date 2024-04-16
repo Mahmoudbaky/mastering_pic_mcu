@@ -146,6 +146,22 @@ void __interrupt() InterruptManager(void){
 
     /* ============ ccp1 and ccp2 Interrupt End ============ */
 
+    /* ============ USART Interrupt Start ============ */
+
+    if((INTERRUPT_ENABLE == PIE1bits.TXIE)&&(INTERRUPT_OCCUR == PIR1bits.TXIF)){
+        EUSART_TX_ISR();
+    }
+    else{/* nothing */}
+
+    if((INTERRUPT_ENABLE == PIE1bits.RCIE)&&(INTERRUPT_OCCUR == PIR1bits.RCIF)){
+        EUSART_RX_ISR();
+    }
+    else{/* nothing */}
+    
+    /* ============ USART Interrupt End ============ */
+
+
+
 }
 
 #endif
